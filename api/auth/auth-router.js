@@ -53,8 +53,8 @@ router.post("/login", checkUsernameExists, (req, res, next) => {
     const token = tokenBuilder(req.user)
     res.status(200).json({message: `${username} is back!`, token,})
   } else {
-    next()
+    next({status: 401, message: "Invalid credentials"})
   }
-});
+}); 
 
 module.exports = router;

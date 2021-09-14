@@ -64,7 +64,7 @@ const checkUsernameExists = (req, res, next) => {
   const { username } = req.body;
   Users.findBy({ username })
     .then(exists => {
-      if (!exists) {
+      if (!exists.length) {
         next({status: 401, message: "Invalid credentials"})
       } else {
         req.user = exists[0]
@@ -96,7 +96,7 @@ const validateRoleName = (req, res, next) => {
   */
   const { role_name } = req.body;
   if (!role_name || role_name.trim() === '') {
-    req.role_name = 'student';
+    req.body.role_name = 'student';
     next();
   } else if (role_name.trim() === 'admin') {
     next({status: 422, message: "Role name can not be admin"})
@@ -104,9 +104,9 @@ const validateRoleName = (req, res, next) => {
     next({status: 422, message: "Role name can not be longer than 32 chars"})
   } else {
     req.body.role_name = role_name.trim();
-    next(); 
+    next();
   }
-} 
+}  
 
 module.exports = {
   restricted,
